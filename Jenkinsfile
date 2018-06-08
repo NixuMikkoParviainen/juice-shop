@@ -13,7 +13,12 @@ node {
       archiveArtifacts allowEmptyArchive: true, artifacts: '**/dependency-check-report.*', onlyIfSuccessful: true
       step([$class: 'DependencyCheckPublisher', unstableTotalAll: '0'])
    }
-
+    stage('SonarCube') {
+         def scannerHome = tool 'sonarQubeScanner';
+         withSonarQubeEnv('sonarqubeServer') {
+         sh "${scannerHome}/bin/sonar-scanner -Dsonar.sources=./routes"
+    }   
+    }
 
 }
 
